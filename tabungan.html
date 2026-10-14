@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Cek Buku Tabungan</title>
+    <style>
+        :root {
+            --primary: #27AE60;
+            --primary-dark: #229957;
+            --dark: #2C3E50;
+            --gray: #7F8C8D;
+            --light: #F7F8FA;
+            --card: #FFFFFF;
+            --border: #DDE2EA;
+            --radius: 14px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 16px;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 22px;
+            box-shadow: 0 4px 16px rgba(44, 62, 80, 0.06);
+            margin-bottom: 18px;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+        }
+
+        .form-group { margin-bottom: 16px; }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color .18s ease, box-shadow .18s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, .1);
+        }
+
+        ::placeholder { color: #B8C2D0; }
+
+        .input-hint {
+            font-size: 0.78rem;
+            color: var(--gray);
+            margin-top: 4px;
+            display: block;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius);
+            background: var(--primary);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .18s ease, transform .08s ease;
+        }
+
+        button:hover { background: var(--primary-dark); }
+
+        button:active { transform: scale(0.985); }
+
+        button:disabled, button[disabled] {
+            opacity: .65;
+            cursor: not-allowed;
+        }
+
+        .btn-search {
+            background: #007BFF;
+            padding: 12px;
+            font-size: 0.95rem;
+            border-radius: var(--radius);
+        }
+
+        .btn-search:hover { background: #0069D9; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 0.92rem;
+        }
+
+        th, td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #EEF0F2;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background: #F0F4F3;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-setor { background: #E3F4E6; color: var(--primary-dark); }
+        .badge-tarik { background: #FFEAEA; color: #C0392B; }
+
+        .saldo-box {
+            background: #E8F5E9;
+            border: 1.5px solid #C8E6C9;
+            border-radius: var(--radius);
+            padding: 16px;
+            margin: 16px 0;
+            text-align: center;
+            display: none;
+        }
+
+        .saldo-box h3 {
+            margin: 0;
+            color: var(--primary-dark);
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .search-note {
+            font-size: 0.82rem;
+            color: var(--gray);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        @media (max-width: 576px) {
+            .card { padding: 18px; }
+            h2 { font-size: 1.2rem; }
+        }
+
+        @media (min-width: 768px) {
+            h2 { font-size: 1.45rem; }
+            .card { padding: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2 id="judulHalaman">Cek Buku Tabungan</h2>
+
+        <!-- Area Pencarian -->
+        <div id="areaPencarian">
+            <p class="search-note">Masukkan Nama atau ID Anda</p>
+            <form id="formCek">
+                <div class="form-group">
+                    <label for="namaCustomer">Nama / ID</label>
+                    <input type="text" id="namaCustomer" name="namaCustomer" required placeholder="Contoh: budi123" autocomplete="off" autocapitalize="none">
+                </div>
+                <button type="submit" id="btn-cari" class="btn-search">Cari Data</button>
+            </form>
+        </div>
+
+        <p id="pesanLoading" style="display: none; color: #007BFF; font-weight: bold; text-align: center;">
+            Memuat data tabungan...
+        </p>
+
+        <!-- Kotak Saldo -->
+        <div class="saldo-box" id="infoSaldo">
+            <p style="margin: 0 0 6px 0; font-size: 0.82rem; color: var(--gray);">Total Saldo Saat Ini</p>
+            <h3 id="angkaSaldo">Rp 0</h3>
+        </div>
+    </div>
+
+    <div class="card" id="riwayatCard" style="display: none;">
+        <h3>Riwayat Transaksi</h3>
+        <div style="overflow-x: auto;">
+            <table id="tabelRiwayat">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Jenis</th>
+                        <th>Nominal</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxvV4KsSosKavFkg1g0SaQAjDT-r6NULvgGgdbbLgGVyDZFzwq4T5YYnGnxjlQzi1Dn/exec';
+
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(angka);
+        }
+
+        function resetBtn() {
+            const b = document.getElementById('btn-cari');
+            b.innerHTML = 'Cari Data';
+            b.disabled = false;
+        }
+
+        // Fetch data dari Google Sheets
+        function fetchData() {
+            return fetch(scriptURL).then(response => {
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                return response.json();
+            });
+        }
+
+        // Redirect ke halaman error
+        function goToError() {
+            window.location.href = '404.html';
+        }
+
+        // Cek URL parameter: ?user=xxx (deep link)
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userDariLink = urlParams.get('user');
+
+            if (userDariLink) {
+                document.getElementById('areaPencarian').style.display = 'none';
+                document.getElementById('judulHalaman').innerText = "Buku Tabungan: " + userDariLink.toUpperCase();
+                document.getElementById('pesanLoading').style.display = 'block';
+                tarikData(userDariLink.toLowerCase());
+            }
+        };
+
+        document.getElementById('formCek').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const inputNama = document.getElementById('namaCustomer').value.trim();
+            if (!inputNama) return;
+
+            const btn = document.getElementById('btn-cari');
+            btn.innerHTML = 'Mencari...';
+            btn.disabled = true;
+            tarikData(inputNama.toLowerCase());
+        });
+
+        function tarikData(namaTarget) {
+            const tbody = document.querySelector("#tabelRiwayat tbody");
+            const infoSaldo = document.getElementById('infoSaldo');
+            const angkaSaldo = document.getElementById('angkaSaldo');
+            const riwayatCard = document.getElementById('riwayatCard');
+            const pesanLoading = document.getElementById('pesanLoading');
+
+            tbody.innerHTML = '';
+            riwayatCard.style.display = 'none';
+
+            fetchData()
+            .then(data => {
+                if (!Array.isArray(data)) {
+                    goToError();
+                    return;
+                }
+
+                let totalSaldo = 0;
+                let dataDitemukan = false;
+
+                data.forEach(row => {
+                    if (row.nama && row.nama.toLowerCase() === namaTarget) {
+                        dataDitemukan = true;
+
+                        let nominal = parseFloat(row.nominal);
+                        if (row.jenis === 'Setor') totalSaldo += nominal;
+                        else if (row.jenis === 'Tarik') totalSaldo -= nominal;
+
+                        const tr = document.createElement("tr");
+                        const tgl = new Date(row.timestamp).toLocaleDateString('id-ID');
+                        const badgeClass = row.jenis === 'Setor' ? 'badge-setor' : 'badge-tarik';
+
+                        tr.innerHTML = `
+                            <td>${tgl}</td>
+                            <td><span class="badge ${badgeClass}">${row.jenis}</span></td>
+                            <td>${formatRupiah(nominal)}</td>
+                            <td>${row.keterangan || '-'}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    }
+                });
+
+                pesanLoading.style.display = 'none';
+
+                if (dataDitemukan) {
+                    infoSaldo.style.display = 'block';
+                    riwayatCard.style.display = 'block';
+                    angkaSaldo.innerText = formatRupiah(totalSaldo);
+                } else {
+                    goToError();
+                }
+
+                resetBtn();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                pesanLoading.style.display = 'none';
+                goToError();
+            });
+        }
+    </script>
+</body>
+</html>

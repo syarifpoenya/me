@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Formulir Transaksi</title>
+    <style>
+        :root {
+            --primary: #27AE60;
+            --primary-dark: #229957;
+            --accent: #F5A623;
+            --dark: #2C3E50;
+            --gray: #7F8C8D;
+            --light: #F7F8FA;
+            --card: #FFFFFF;
+            --border: #DDE2EA;
+            --radius: 14px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 16px;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 22px;
+            box-shadow: 0 4px 16px rgba(44, 62, 80, 0.06);
+            margin-bottom: 18px;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+        }
+
+        .form-group { margin-bottom: 16px; }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color .18s ease, box-shadow .18s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, .1);
+        }
+
+        ::placeholder { color: #B8C2D0; }
+
+        .input-hint {
+            font-size: 0.78rem;
+            color: var(--gray);
+            margin-top: 4px;
+            display: block;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius);
+            background: var(--primary);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .18s ease, transform .08s ease;
+        }
+
+        button:hover { background: var(--primary-dark); }
+
+        button:active { transform: scale(0.985); }
+
+        button:disabled, button[disabled] {
+            opacity: .65;
+            cursor: not-allowed;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 0.92rem;
+        }
+
+        th, td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #EEF0F2;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background: #F0F4F3;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-setor { background: #E3F4E6; color: var(--primary-dark); }
+        .badge-tarik { background: #FFEAEA; color: #C0392B; }
+
+        .empty-state {
+            text-align: center;
+            padding: 28px 12px;
+            color: var(--gray);
+        }
+
+        .empty-state svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 10px;
+            opacity: .35;
+        }
+
+        .btn-refresh {
+            background: #007BFF;
+            width: auto;
+            padding: 10px 18px;
+            font-size: 0.92rem;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .btn-refresh:hover { background: #0069D9; }
+
+        @media (max-width: 576px) {
+            .card { padding: 18px; }
+            h2 { font-size: 1.2rem; }
+        }
+
+        @media (min-width: 768px) {
+            h2 { font-size: 1.45rem; }
+            .card { padding: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Formulir Transaksi</h2>
+        <form name="form-tabungan">
+            <div class="form-group">
+                <label>Nama Penabung</label>
+                <input type="text" name="nama" required placeholder="Ketik atau pilih nama..." list="daftar-nama" autocomplete="off">
+                <datalist id="daftar-nama"></datalist>
+                <small class="input-hint">Pilih dari daftar nama yang sudah ada, atau ketik nama baru.</small>
+            </div>
+
+            <div class="form-group">
+                <label>Jenis Transaksi</label>
+                <select name="jenis" required>
+                    <option value="Setor">Setor Uang</option>
+                    <option value="Tarik">Tarik Uang</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Nominal (Rp)</label>
+                <input type="number" name="nominal" required placeholder="Contoh: 50000" min="0" step="1000">
+            </div>
+
+            <div class="form-group">
+                <label>Keterangan (Opsional)</label>
+                <input type="text" name="keterangan" placeholder="Contoh: Tabungan minggu ke-1">
+            </div>
+
+            <button type="submit" id="btn-submit">Simpan Transaksi</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Riwayat Transaksi</h2>
+        <button type="button" onclick="loadData()" class="btn-refresh">Muat Ulang</button>
+        <div style="overflow-x: auto;">
+            <table id="tabelRiwayat">
+                <thead>
+                    <tr>
+                        <th>Waktu</th>
+                        <th>Nama</th>
+                        <th>Jenis</th>
+                        <th>Nominal</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="5"><div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 0114.25-7.25A6.75 6.75 0 0118 18v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4a1 1 0 10-2 0v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-3a9 9 0 013-7.75z"/><circle cx="12" cy="10" r="2"/></svg>
+                        <p>Memuat data transaksi...</p>
+                    </div></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxvV4KsSosKavFkg1g0SaQAjDT-r6NULvgGgdbbLgGVyDZFzwq4T5YYnGnxjlQzi1Dn/exec';
+
+        const form = document.forms['form-tabungan'];
+        const btnSubmit = document.getElementById('btn-submit');
+
+        function showEmpty(msg) {
+            const tbody = document.querySelector("#tabelRiwayat tbody");
+            tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19h14l-7-7-7 7v2a2 2 0 002 2h10a2 2 0 002-2v-2l-7-7z"/><circle cx="12" cy="7" r="2.5"/></svg><p>' + msg + '</p></div></td></tr>';
+        }
+
+        function setSubmitting(state) {
+            btnSubmit.innerHTML = state ? 'Menyimpan...' : 'Simpan Transaksi';
+            btnSubmit.disabled = state;
+        }
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            setSubmitting(true);
+
+            const data = {
+                nama: form.nama.value.trim(),
+                jenis: form.jenis.value,
+                nominal: form.nominal.value,
+                keterangan: form.keterangan.value
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert('Transaksi Berhasil Disimpan!');
+                form.reset();
+                setSubmitting(false);
+                loadData();
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('Gagal menyimpan data. Periksa koneksi atau URL Script.');
+                setSubmitting(false);
+            });
+        });
+
+        function loadData() {
+            const tbody = document.querySelector("#tabelRiwayat tbody");
+            showEmpty('Memuat data dari Google Sheets...');
+
+            fetch(scriptURL)
+            .then(response => {
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                return response.json();
+            })
+            .then(data => {
+                tbody.innerHTML = "";
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    showEmpty('Belum ada data transaksi.');
+                    return;
+                }
+
+                const namaSet = new Set();
+                data.forEach(row => { if (row.nama) namaSet.add(row.nama); });
+
+                const datalist = document.getElementById('daftar-nama');
+                datalist.innerHTML = '';
+                namaSet.forEach(n => {
+                    const opt = document.createElement('option');
+                    opt.value = n;
+                    datalist.appendChild(opt);
+                });
+
+                data.reverse().forEach(row => {
+                    const tr = document.createElement("tr");
+                    const tgl = new Date(row.timestamp).toLocaleString('id-ID');
+                    const nominalRp = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(row.nominal);
+                    const badgeClass = row.jenis === 'Setor' ? 'badge-setor' : 'badge-tarik';
+
+                    tr.innerHTML = `
+                        <td>${tgl}</td>
+                        <td>${row.nama}</td>
+                        <td><span class="badge ${badgeClass}">${row.jenis}</span></td>
+                        <td>${nominalRp}</td>
+                        <td>${row.keterangan || '-'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data!', error);
+                showEmpty('Gagal memuat data. Klik "Muat Ulang" untuk mencoba lagi.');
+            });
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
